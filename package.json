@@ -23,11 +23,13 @@
   },
   "homepage": "https://github.com/soli033h/welcome_to_pns#readme",
   "dependencies": {
-    "@astrojs/netlify": "^8.2.6",
     "@astrojs/sitemap": "^3.7.4",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
     "gsap": "^3.15.0",
     "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }
