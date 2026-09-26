@@ -29,6 +29,17 @@ if (!reduceMotion) {
   });
 
   gsap.utils.toArray<HTMLElement>(".project-image-wrap").forEach((image) => {
+    image.addEventListener("pointermove", (event) => {
+      const bounds = image.getBoundingClientRect();
+      image.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
+      image.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
+    });
+
+    image.addEventListener("pointerleave", () => {
+      image.style.setProperty("--pointer-x", "50%");
+      image.style.setProperty("--pointer-y", "50%");
+    });
+
     gsap.fromTo(image.querySelector("img"), { scale: 1.12 }, {
       scale: 1,
       ease: "none",
