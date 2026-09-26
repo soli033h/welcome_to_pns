@@ -5,8 +5,11 @@ export const projects = [
     title: "A new rhythm\nfor moving cities.",
     category: "Brand experience",
     year: "2025",
-    image:
-      "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1800&q=85",
+    images: [
+      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=85",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1800&q=85",
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1800&q=85",
+    ],
     accent: "#e8ff67",
   },
   {
@@ -15,8 +18,11 @@ export const projects = [
     title: "The art of\nslowing down.",
     category: "Identity & digital",
     year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=85",
+    images: [
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1800&q=85",
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=85",
+      "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1800&q=85",
+    ],
     accent: "#f2c4a4",
   },
   {
@@ -25,8 +31,11 @@ export const projects = [
     title: "Technology with\na human pulse.",
     category: "Campaign",
     year: "2024",
-    image:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1800&q=85",
+    images: [
+      "https://images.unsplash.com/photo-1497366811366-6870744d04b2?auto=format&fit=crop&w=1800&q=85",
+      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=85",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1800&q=85",
+    ],
     accent: "#a8d8ff",
   },
 ];

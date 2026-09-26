@@ -7,13 +7,67 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 const header = document.querySelector<HTMLElement>("[data-header]");
 const menuToggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
 const mobileMenu = document.querySelector<HTMLElement>(".mobile-menu");
+const sliderInterval = 5200;
+
+document.querySelectorAll<HTMLElement>("[data-slider]").forEach((slider) => {
+  const slides = Array.from(slider.querySelectorAll<HTMLImageElement>(".project-slide"));
+  const buttons = Array.from(slider.parentElement?.querySelectorAll<HTMLButtonElement>("[data-slide-target]") ?? []);
+  let activeIndex = 0;
+  let timer: number | undefined;
+
+  const showSlide = (nextIndex: number) => {
+    activeIndex = (nextIndex + slides.length) % slides.length;
+    slides.forEach((slide, index) => {
+      const isActive = index === activeIndex;
+      slide.classList.toggle("is-active", isActive);
+      slide.setAttribute("aria-hidden", String(!isActive));
+    });
+    buttons.forEach((button, index) => {
+      const isActive = index === activeIndex;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-current", isActive ? "true" : "false");
+    });
+  };
+
+  const stop = () => {
+    if (timer) window.clearInterval(timer);
+    timer = undefined;
+  };
+
+  const start = () => {
+    if (reduceMotion || slides.length < 2) return;
+    stop();
+    timer = window.setInterval(() => showSlide(activeIndex + 1), sliderInterval);
+  };
+
+  buttons.forEach((button) => button.addEventListener("click", () => {
+    showSlide(Number(button.dataset.slideTarget));
+    start();
+  }));
+  slider.parentElement?.addEventListener("pointerenter", stop);
+  slider.parentElement?.addEventListener("pointerleave", start);
+  slider.parentElement?.addEventListener("focusin", stop);
+  slider.parentElement?.addEventListener("focusout", (event) => {
+    if (!slider.parentElement?.contains(event.relatedTarget as Node | null)) start();
+  });
+  start();
+});
 
 if (!reduceMotion) {
   const heroTitle = document.querySelector<HTMLElement>("[data-split-text]");
   if (heroTitle) {
+    const originalTitle = heroTitle.innerHTML;
     const lines = heroTitle.innerHTML.split("<br>");
     heroTitle.innerHTML = lines.map((line) => `<span class="title-line"><span>${line}</span></span>`).join("");
-    gsap.to(".title-line > span", { y: 0, duration: 1.2, stagger: 0.12, ease: "power4.out", delay: 0.25 });
+    gsap.from(".title-line > span", {
+      y: 24,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.12,
+      ease: "power4.out",
+      delay: 0.25,
+      onComplete: () => { heroTitle.innerHTML = originalTitle; },
+    });
     gsap.from(".hero-eyebrow, .hero-bottomline, .hero-footer", { opacity: 0, y: 24, duration: 0.9, stagger: 0.1, ease: "power3.out", delay: 0.55 });
     gsap.to(".hero-orbit", { rotation: 360, duration: 28, repeat: -1, ease: "none" });
   }
@@ -24,20 +78,49 @@ if (!reduceMotion) {
       y: 48,
       duration: 1,
       ease: "power3.out",
-      scrollTrigger: { trigger: element, start: "top 84%", once: true },
+      scrollTrigger: {
+        trigger: element,
+        start: "top 84%",
+        toggleActions: "play none none reset",
+      },
     });
   });
 
   gsap.utils.toArray<HTMLElement>(".project-image-wrap").forEach((image) => {
+    let targetX = image.clientWidth / 2;
+    let targetY = image.clientHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+    let frame: number | undefined;
+
+    const updateFocus = () => {
+      currentX += (targetX - currentX) * 0.12;
+      currentY += (targetY - currentY) * 0.12;
+      image.style.setProperty("--pointer-x", `${currentX}px`);
+      image.style.setProperty("--pointer-y", `${currentY}px`);
+
+      if (Math.abs(targetX - currentX) > 0.1 || Math.abs(targetY - currentY) > 0.1) {
+        frame = window.requestAnimationFrame(updateFocus);
+      } else {
+        frame = undefined;
+      }
+    };
+
+    const requestFocusUpdate = () => {
+      if (frame === undefined) frame = window.requestAnimationFrame(updateFocus);
+    };
+
     image.addEventListener("pointermove", (event) => {
       const bounds = image.getBoundingClientRect();
-      image.style.setProperty("--pointer-x", `${event.clientX - bounds.left}px`);
-      image.style.setProperty("--pointer-y", `${event.clientY - bounds.top}px`);
+      targetX = event.clientX - bounds.left;
+      targetY = event.clientY - bounds.top;
+      requestFocusUpdate();
     });
 
     image.addEventListener("pointerleave", () => {
-      image.style.setProperty("--pointer-x", "50%");
-      image.style.setProperty("--pointer-y", "50%");
+      targetX = image.clientWidth / 2;
+      targetY = image.clientHeight / 2;
+      requestFocusUpdate();
     });
 
     gsap.fromTo(image.querySelector("img"), { scale: 1.12 }, {

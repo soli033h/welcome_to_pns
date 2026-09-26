@@ -17,10 +17,31 @@ import { projects } from "../data/projects";
     {projects.map((project) => (
       <article class="project-card" style={`--project-accent: ${project.accent}`}>
         <div class="project-image-wrap">
-          <img src={project.image} alt={`${project.client} project`} loading="lazy" />
+          <div class="project-slides" data-slider>
+            {project.images.map((image, imageIndex) => (
+              <img
+                class:list={{ "project-slide": true, "is-active": imageIndex === 0 }}
+                src={image}
+                alt={`${project.client} project view ${imageIndex + 1}`}
+                loading={imageIndex === 0 ? "lazy" : "eager"}
+                aria-hidden={imageIndex === 0 ? undefined : "true"}
+              />
+            ))}
+          </div>
           <div class="project-wash"></div>
           <span class="project-index">{project.index}</span>
           <span class="project-arrow" aria-hidden="true">↗</span>
+          <div class="project-pagination" aria-label={`${project.client} image views`}>
+            {project.images.map((_, imageIndex) => (
+              <button
+                class:list={{ "is-active": imageIndex === 0 }}
+                type="button"
+                data-slide-target={imageIndex}
+                aria-label={`Show image ${imageIndex + 1}`}
+                aria-current={imageIndex === 0 ? "true" : undefined}
+              ></button>
+            ))}
+          </div>
         </div>
         <div class="project-meta">
           <div>
