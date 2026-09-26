@@ -1,0 +1,29 @@
+---
+import { company } from "../data/company";
+---
+
+<section class="hero-section" id="top" data-section="hero">
+  <div class="hero-media" aria-hidden="true">
+    <div class="hero-orbit orbit-one"></div>
+    <div class="hero-orbit orbit-two"></div>
+    <div class="hero-grid"></div>
+    <span class="hero-coordinate">37° 33' 59.7" N<br />126° 58' 41.5" E</span>
+  </div>
+
+  <div class="hero-content container">
+    <p class="eyebrow hero-eyebrow">Independent creative company / 2025</p>
+    <h1 class="hero-title" data-split-text>{company.tagline}</h1>
+    <div class="hero-bottomline">
+      <p>{company.description}</p>
+      <a class="circle-link" href="#about" aria-label="Discover PNS">
+        <span>↓</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-footer container">
+    <span>Scroll to explore</span>
+    <span class="hero-line"></span>
+    <span>01 / 05</span>
+  </div>
+</section>

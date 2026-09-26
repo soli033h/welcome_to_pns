@@ -1,0 +1,20 @@
+---
+import { company } from "../data/company";
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <a class="brand-mark" href="#top" aria-label={`${company.name} home`}><span class="brand-dot"></span><span>{company.name}</span></a>
+      <p>Ideas with<br />a pulse.</p>
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} {company.legalName}</span>
+      <div class="footer-links">
+        <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram ↗</a>
+        <a href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+      </div>
+      <span>{company.location}</span>
+    </div>
+  </div>
+</footer>

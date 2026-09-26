@@ -1,0 +1,33 @@
+---
+import { company } from "../data/company";
+---
+
+<section class="contact-section section-pad" id="contact">
+  <div class="container contact-grid">
+    <div class="contact-copy reveal-up">
+      <p class="eyebrow">Let's make something / 04</p>
+      <h2 class="display-heading">Have a good<br /><em>question?</em></h2>
+      <p class="body-copy">새로운 프로젝트, 브랜드에 대한 고민, 아직 이름 붙이지 못한 아이디어까지 편하게 이야기해주세요.</p>
+      <a class="contact-email" href={`mailto:${company.email}`}>{company.email}<span>↗</span></a>
+    </div>
+
+    <form class="contact-form reveal-up" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contact" />
+      <p class="hidden-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
+      <label>
+        <span>Your name</span>
+        <input type="text" name="name" placeholder="이름을 입력해주세요" required />
+      </label>
+      <label>
+        <span>Email address</span>
+        <input type="email" name="email" placeholder="hello@example.com" required />
+      </label>
+      <label>
+        <span>Tell us a little</span>
+        <textarea name="message" rows="4" placeholder="프로젝트에 대해 알려주세요" required></textarea>
+      </label>
+      <button class="submit-button" type="submit">Send inquiry <span>↗</span></button>
+      <p class="form-note">보내주신 내용은 프로젝트 검토를 위해서만 사용됩니다.</p>
+    </form>
+  </div>
+</section>

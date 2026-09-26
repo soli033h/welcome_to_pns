@@ -1,0 +1,38 @@
+---
+import { projects } from "../data/projects";
+---
+
+<section class="work-section section-pad" id="work">
+  <div class="container">
+    <div class="work-heading reveal-up">
+      <div>
+        <p class="eyebrow">Selected work / 03</p>
+        <h2 class="display-heading">A few things<br /><em>we've shaped.</em></h2>
+      </div>
+      <p class="work-note">Different questions.<br />One common thread.</p>
+    </div>
+  </div>
+
+  <div class="project-list">
+    {projects.map((project) => (
+      <article class="project-card" style={`--project-accent: ${project.accent}`}>
+        <div class="project-image-wrap">
+          <img src={project.image} alt={`${project.client} project`} loading="lazy" />
+          <div class="project-wash"></div>
+          <span class="project-index">{project.index}</span>
+          <span class="project-arrow" aria-hidden="true">↗</span>
+        </div>
+        <div class="project-meta">
+          <div>
+            <p class="project-client">{project.client}</p>
+            <h3>{project.title}</h3>
+          </div>
+          <div class="project-details">
+            <span>{project.category}</span>
+            <span>{project.year}</span>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

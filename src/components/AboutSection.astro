@@ -1,0 +1,35 @@
+---
+import { services, values } from "../data/company";
+---
+
+<section class="about-section section-pad" id="about">
+  <div class="container">
+    <div class="section-intro reveal-up">
+      <p class="eyebrow">About PNS / 02</p>
+      <h2 class="display-heading">Good work starts<br /><em>with a point of view.</em></h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-statement reveal-up">
+        <p class="large-copy">우리는 브랜드가 세상과 만나는 방식을 새롭게 정의합니다.</p>
+        <p class="body-copy">전략, 디자인, 기술의 경계를 넘나들며 사람의 행동을 바꾸는 경험을 만듭니다. 작지만 날카로운 팀으로, 각 프로젝트에 가장 깊이 관여합니다.</p>
+      </div>
+      <div class="service-list reveal-up">
+        <p class="eyebrow">What we do</p>
+        <ul>
+          {services.map((service, index) => <li><span>0{index + 1}</span>{service}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <div class="values-grid">
+      {values.map((value) => (
+        <article class="value-item reveal-up">
+          <span class="value-number">{value.number}</span>
+          <h3>{value.title}</h3>
+          <p>{value.description}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

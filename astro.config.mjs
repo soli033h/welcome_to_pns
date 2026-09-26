@@ -7,10 +7,10 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://pns.company',
   integrations: [sitemap()],
 
   vite: {
     plugins: [tailwindcss()]
-  },
-
+  }
 });
