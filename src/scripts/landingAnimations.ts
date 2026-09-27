@@ -130,6 +130,21 @@ if (!reduceMotion) {
     });
   });
 
+  gsap.utils.toArray<HTMLElement>("[data-value-card]").forEach((card) => {
+    card.addEventListener("pointermove", (event) => {
+      const bounds = card.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+      card.style.setProperty("--card-rotate-y", `${x * 3}deg`);
+      card.style.setProperty("--card-rotate-x", `${y * -3}deg`);
+    });
+
+    card.addEventListener("pointerleave", () => {
+      card.style.setProperty("--card-rotate-x", "0deg");
+      card.style.setProperty("--card-rotate-y", "0deg");
+    });
+  });
+
   ScrollTrigger.create({
     start: "top -80",
     end: "max",

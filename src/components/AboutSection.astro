@@ -22,9 +22,13 @@ import { services, values } from "../data/company";
       </div>
     </div>
 
+    <div class="values-header reveal-up">
+      <p class="eyebrow">Our principles</p>
+      <span>03 / 03</span>
+    </div>
     <div class="values-grid">
       {values.map((value) => (
-        <article class="value-item reveal-up">
+        <article class="value-item reveal-up" data-value-card>
           <span class="value-number">{value.number}</span>
           <h3>{value.title}</h3>
           <p>{value.description}</p>
