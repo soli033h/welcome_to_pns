@@ -7,6 +7,7 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
 const header = document.querySelector<HTMLElement>("[data-header]");
 const menuToggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
 const mobileMenu = document.querySelector<HTMLElement>(".mobile-menu");
+const workSection = document.querySelector<HTMLElement>("[data-work-section]");
 const sliderInterval = 5200;
 
 document.querySelectorAll<HTMLElement>("[data-slider]").forEach((slider) => {
@@ -52,6 +53,22 @@ document.querySelectorAll<HTMLElement>("[data-slider]").forEach((slider) => {
   });
   start();
 });
+
+if (workSection) {
+  const imageAreas = Array.from(workSection.querySelectorAll<HTMLElement>(".project-image-wrap"));
+  const visibleImages = new Set<HTMLElement>();
+  const imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) visibleImages.add(entry.target as HTMLElement);
+      else visibleImages.delete(entry.target as HTMLElement);
+    });
+    const isImageFocus = visibleImages.size > 0;
+    workSection.classList.toggle("is-image-focus", isImageFocus);
+    header?.classList.toggle("is-image-focus", isImageFocus);
+  }, { threshold: 0.2 });
+
+  imageAreas.forEach((image) => imageObserver.observe(image));
+}
 
 if (!reduceMotion) {
   const heroTitle = document.querySelector<HTMLElement>("[data-split-text]");
@@ -148,7 +165,12 @@ if (!reduceMotion) {
   ScrollTrigger.create({
     start: "top -80",
     end: "max",
-    onUpdate: (self) => header?.classList.toggle("is-scrolled", self.scroll() > 80),
+    onUpdate: (self) => {
+      const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollableHeight > 0 ? self.scroll() / scrollableHeight : 0;
+      header?.classList.toggle("is-scrolled", self.scroll() > 80);
+      header?.style.setProperty("--scroll-progress", String(Math.min(1, Math.max(0, progress))));
+    },
   });
 }
 

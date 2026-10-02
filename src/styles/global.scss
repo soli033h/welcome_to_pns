@@ -88,6 +88,20 @@ img { display: block; max-width: 100%; }
   transition: background .35s, color .35s;
 
   &.is-scrolled { color: $ink; background: $acid; }
+  &.is-image-focus { color: $paper; background: #080706; }
+
+  .scroll-progress {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: currentColor;
+    opacity: .7;
+    transform: scaleX(var(--scroll-progress, 0));
+    transform-origin: left;
+    transition: transform .15s linear;
+  }
 
   .brand-mark {
     display: inline-flex;
@@ -106,6 +120,7 @@ img { display: block; max-width: 100%; }
   }
 
   &.is-scrolled .brand-dot { background: $ink; }
+  &.is-image-focus .brand-dot { background: $acid; }
 }
 
 .desktop-nav {
@@ -214,8 +229,33 @@ img { display: block; max-width: 100%; }
     padding-top: 8px;
 
     ul { padding: 0; margin: 28px 0 0; list-style: none; border-top: 1px solid rgba(25,26,23,.2); }
-    li { display: flex; gap: 20px; padding: 16px 0; border-bottom: 1px solid rgba(25,26,23,.2); font-size: 18px; }
-    li span { color: #85857d; @include mono-label; font-size: 10px; }
+    li {
+      position: relative;
+      display: flex;
+      gap: 20px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(25,26,23,.2);
+      font-size: 18px;
+      transition: color .3s ease, padding-left .3s ease;
+
+      &::after {
+        position: absolute;
+        right: 0;
+        bottom: -1px;
+        left: 0;
+        height: 1px;
+        content: '';
+        background: $acid;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform .4s cubic-bezier(.2,.65,.25,1);
+      }
+
+      &:hover { padding-left: 8px; color: $acid; }
+      &:hover::after { transform: scaleX(1); }
+    }
+    li span { color: #85857d; @include mono-label; font-size: 10px; transition: color .3s ease; }
+    li:hover span { color: $acid; }
   }
   .values-header {
     display: flex;
@@ -231,8 +271,8 @@ img { display: block; max-width: 100%; }
   .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; }
   .value-item {
     --value-accent: #{$sage};
-    --card-rotate-x: 0deg;
-    --card-rotate-y: 0deg;
+    --card-rotate-x: 1.5deg;
+    --card-rotate-y: 1.5deg;
     position: relative;
     min-height: 270px;
     padding: 24px 24px 28px;
@@ -272,7 +312,24 @@ img { display: block; max-width: 100%; }
   .value-item p { max-width: 240px; margin: 0; color: #85857d; font-size: 13px; line-height: 1.7; }
 }
 
-.work-section { background: $ink; }
+.work-section {
+  position: relative;
+  background: $ink;
+
+  &::before {
+    position: absolute;
+    z-index: 0;
+    inset: 0;
+    content: '';
+    background: #080706;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.2s ease;
+  }
+
+  &.is-image-focus::before { opacity: .48; }
+  > * { position: relative; z-index: 1; }
+}
 .work-heading { display: flex; align-items: end; justify-content: space-between; }
 .work-note { margin: 0 0 7px; color: $muted; @include mono-label; font-size: 11px; line-height: 1.7; text-align: right; }
 .project-list { width: min(100% - 64px, 1280px); margin: 120px auto 0; }
@@ -370,13 +427,16 @@ img { display: block; max-width: 100%; }
   &:hover .project-arrow { color: $ink; background: $paper; transform: rotate(45deg); }
   .project-meta { display: flex; justify-content: space-between; padding: 28px 4px 0; }
   .project-client, .project-details { color: $muted; @include mono-label; font-size: 10px; }
-  .project-meta h3 { max-width: 600px; margin: 16px 0 0; white-space: pre-line; font-size: clamp(30px, 4vw, 60px); letter-spacing: -.07em; line-height: .95; }
+  .project-meta h3 { max-width: 600px; margin: 16px 0 0; color: $paper; white-space: pre-line; font-size: clamp(30px, 4vw, 60px); letter-spacing: -.07em; line-height: .95; transition: color .35s ease, transform .35s ease; }
+  &:hover .project-meta h3 { color: var(--project-accent); transform: translateX(6px); }
   .project-details { display: flex; gap: 32px; align-self: end; }
 }
 
   .contact-section {
   color: $paper;
-  background: $acid;
+  background:
+    radial-gradient(circle at 86% 8%, rgba(255, 214, 164, .28), transparent 30%),
+    linear-gradient(118deg, #a94f43 0%, $acid 48%, #d48661 100%);
 
   .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13%; }
   .eyebrow { color: rgba(245,239,228,.72); }
@@ -448,7 +508,9 @@ img { display: block; max-width: 100%; }
     display: grid;
     padding: 120px 20px 40px;
     visibility: hidden;
-    background: $acid;
+    background:
+      radial-gradient(circle at 90% 8%, rgba(255, 214, 164, .25), transparent 34%),
+      linear-gradient(135deg, #ad5245 0%, $acid 70%);
     color: $ink;
     opacity: 0;
     transition: opacity .3s, visibility .3s;
