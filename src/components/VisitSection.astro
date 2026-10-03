@@ -1,0 +1,72 @@
+---
+import { company } from "../data/company";
+import { homepage } from "../data/homepage";
+---
+
+<section class="visit-section section-pad" id="visit">
+  <div class="container">
+    <div class="visit-heading reveal-up">
+      <div>
+        <p class="eyebrow">{homepage.visit.eyebrow}</p>
+        <h2 class="display-heading">{homepage.visit.heading.lead}<br /><em>{homepage.visit.heading.emphasis}</em></h2>
+      </div>
+      <p class="visit-note">{homepage.visit.description}</p>
+    </div>
+
+    <div class="visit-layout">
+      <div class="map-frame reveal-up">
+        <div
+          class="map-canvas"
+          data-map
+          role="application"
+          aria-label={homepage.visit.mapLabel}
+          tabindex="0"
+        >
+          <div class="map-viewport" data-map-viewport>
+            <div class="map-grid"></div>
+            <div class="map-river"></div>
+            <span class="map-road road-one"></span>
+            <span class="map-road road-two"></span>
+            <span class="map-road road-three"></span>
+            <span class="map-road road-four"></span>
+            <span class="map-label label-one">{homepage.visit.mapLabels[0]}</span>
+            <span class="map-label label-two">{homepage.visit.mapLabels[1]}</span>
+            <span class="map-label label-three">{homepage.visit.mapLabels[2]}</span>
+            <button class="map-marker" type="button" aria-label={homepage.visit.markerLabel} data-map-marker>
+              <span class="map-marker-pulse"></span>
+              <span class="map-marker-dot"></span>
+              <span class="map-marker-name">{company.name}</span>
+            </button>
+          </div>
+          <span class="map-hint">{homepage.visit.mapHint}</span>
+          <div class="map-controls" aria-label={homepage.visit.controlsLabel}>
+            <button type="button" aria-label={homepage.visit.zoomInLabel} data-map-zoom="1">+</button>
+            <button type="button" aria-label={homepage.visit.zoomOutLabel} data-map-zoom="-1">−</button>
+            <button type="button" aria-label={homepage.visit.resetLabel} data-map-reset>◎</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="visit-details reveal-up">
+        <div class="visit-detail">
+          <span class="detail-label">{homepage.visit.details.studio}</span>
+          <strong>{homepage.visit.placeLabel}</strong>
+          <span>{company.address} · {homepage.visit.transitLabel}</span>
+        </div>
+        <div class="visit-detail">
+          <span class="detail-label">{homepage.visit.details.coordinates}</span>
+          <span>{company.coordinates}</span>
+        </div>
+        <div class="visit-detail">
+          <span class="detail-label">{homepage.visit.details.contact}</span>
+          <a href={`mailto:${company.email}`}>{company.email}<span>{homepage.ui.externalLink}</span></a>
+          <a href={`tel:${company.phone.replaceAll(" ", "")}`}>{company.phone}<span>{homepage.ui.externalLink}</span></a>
+        </div>
+        <a class="visit-directions" href={company.mapUrl} target="_blank" rel="noreferrer">
+          <span>{homepage.visit.directions}</span>
+          <span>{homepage.ui.externalLink}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

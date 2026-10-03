@@ -5,6 +5,9 @@ export const company = {
   description:
     "브랜드의 다음 장면을 설계합니다. 전략에서 경험까지, 오래 기억되는 변화를 만듭니다.",
   location: "Seoul / Korea",
+  address: "Seoul, Korea",
+  coordinates: "37.5665° N, 126.9780° E",
+  mapUrl: "https://www.google.com/maps/search/?api=1&query=Seoul%2C%20Korea",
   email: "hello@pns.company",
   phone: "+82 2 0000 0000",
   social: ["Instagram", "LinkedIn"],

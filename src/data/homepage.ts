@@ -43,7 +43,7 @@ export const homepage = {
     showImageLabel: (imageIndex: number) => `Show image ${imageIndex + 1}`,
   },
   contact: {
-    eyebrow: "Let's make something / 04",
+    eyebrow: "Let's make something / 05",
     heading: {
       lead: "Have a good",
       emphasis: "question?",
@@ -66,6 +66,30 @@ export const homepage = {
     },
     submit: "Send inquiry",
     formNote: "보내주신 내용은 프로젝트 검토를 위해서만 사용됩니다.",
+  },
+  visit: {
+    eyebrow: "Come by / 04",
+    heading: {
+      lead: "Find your way",
+      emphasis: "to us.",
+    },
+    description: "서울의 리듬이 시작되는 곳에서 만나요. 지도 위를 움직여 주변을 천천히 살펴보세요.",
+    mapLabel: "Interactive map of PNS in Seoul",
+    mapHint: "Drag to explore",
+    zoomInLabel: "Zoom in",
+    zoomOutLabel: "Zoom out",
+    resetLabel: "Reset map view",
+    controlsLabel: "Map controls",
+    markerLabel: "PNS studio location",
+    directions: "Open in maps",
+    placeLabel: "PNS Creative Company",
+    transitLabel: "Seoul / Korea",
+    details: {
+      studio: "Studio",
+      coordinates: "Coordinates",
+      contact: "Say hello",
+    },
+    mapLabels: ["JONGNO", "EULJIRO", "HANNAM"],
   },
   footer: {
     tagline: ["Ideas with", "a pulse."],

@@ -8,7 +8,63 @@ const header = document.querySelector<HTMLElement>("[data-header]");
 const menuToggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
 const mobileMenu = document.querySelector<HTMLElement>(".mobile-menu");
 const workSection = document.querySelector<HTMLElement>("[data-work-section]");
+const map = document.querySelector<HTMLElement>("[data-map]");
 const sliderInterval = 5200;
+
+if (map) {
+  const viewport = map.querySelector<HTMLElement>("[data-map-viewport]");
+  const resetButton = map.querySelector<HTMLButtonElement>("[data-map-reset]");
+  const zoomButtons = Array.from(map.querySelectorAll<HTMLButtonElement>("[data-map-zoom]"));
+  let scale = 1;
+  let offsetX = 0;
+  let offsetY = 0;
+  let pointerId: number | undefined;
+  let startX = 0;
+  let startY = 0;
+  let startOffsetX = 0;
+  let startOffsetY = 0;
+
+  const renderMap = () => {
+    viewport?.style.setProperty("transform", `translate(${offsetX}px, ${offsetY}px) scale(${scale})`);
+  };
+
+  const setZoom = (amount: number) => {
+    scale = Math.min(1.6, Math.max(.8, scale + amount));
+    renderMap();
+  };
+
+  zoomButtons.forEach((button) => {
+    button.addEventListener("click", () => setZoom(Number(button.dataset.mapZoom) * .2));
+  });
+  resetButton?.addEventListener("click", () => {
+    scale = 1;
+    offsetX = 0;
+    offsetY = 0;
+    renderMap();
+  });
+  map.addEventListener("pointerdown", (event) => {
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    startY = event.clientY;
+    startOffsetX = offsetX;
+    startOffsetY = offsetY;
+    map.setPointerCapture(event.pointerId);
+  });
+  map.addEventListener("pointermove", (event) => {
+    if (pointerId !== event.pointerId) return;
+    offsetX = startOffsetX + event.clientX - startX;
+    offsetY = startOffsetY + event.clientY - startY;
+    renderMap();
+  });
+  map.addEventListener("pointerup", (event) => {
+    if (pointerId === event.pointerId) pointerId = undefined;
+  });
+  map.addEventListener("pointercancel", () => { pointerId = undefined; });
+  map.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    setZoom(event.deltaY > 0 ? -.1 : .1);
+  }, { passive: false });
+}
 
 document.querySelectorAll<HTMLElement>("[data-slider]").forEach((slider) => {
   const slides = Array.from(slider.querySelectorAll<HTMLImageElement>(".project-slide"));
