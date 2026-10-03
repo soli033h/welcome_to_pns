@@ -1,32 +1,33 @@
 ---
 import { company } from "../data/company";
 import { navigation } from "../data/navigation";
+import { homepage } from "../data/homepage";
 ---
 
 <header class="site-header" data-header>
-  <a class="brand-mark" href="#top" aria-label={`${company.name} home`}>
+  <a class="brand-mark" href="#top" aria-label={homepage.header.brandLabel(company.name)}>
     <span class="brand-dot"></span>
     <span>{company.name}</span>
   </a>
 
-  <nav class="desktop-nav" aria-label="Main navigation">
+  <nav class="desktop-nav" aria-label={homepage.header.navigationLabel}>
     {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
   </nav>
 
   <a class="header-cta" href="#contact">
-    <span>Start a project</span>
-    <span aria-hidden="true">↗</span>
+    <span>{homepage.header.cta}</span>
+    <span aria-hidden="true">{homepage.ui.externalLink}</span>
   </a>
 
   <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu">
-    <span class="sr-only">Open menu</span>
+    <span class="sr-only">{homepage.header.menuLabel}</span>
     <span></span><span></span>
   </button>
   <span class="scroll-progress" aria-hidden="true"></span>
 </header>
 
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-  <nav aria-label="Mobile navigation">
-    {navigation.map((item) => <a href={item.href}>{item.label}<span aria-hidden="true">↗</span></a>)}
+  <nav aria-label={homepage.header.mobileNavigationLabel}>
+    {navigation.map((item) => <a href={item.href}>{item.label}<span aria-hidden="true">{homepage.ui.externalLink}</span></a>)}
   </nav>
 </div>

@@ -1,15 +1,16 @@
 ---
 import { projects } from "../data/projects";
+import { homepage } from "../data/homepage";
 ---
 
 <section class="work-section section-pad" id="work" data-work-section>
   <div class="container">
     <div class="work-heading reveal-up">
       <div>
-        <p class="eyebrow">Selected work / 03</p>
-        <h2 class="display-heading">A few things<br /><em>we've shaped.</em></h2>
+        <p class="eyebrow">{homepage.work.eyebrow}</p>
+        <h2 class="display-heading">{homepage.work.heading.lead}<br /><em>{homepage.work.heading.emphasis}</em></h2>
       </div>
-      <p class="work-note">Different questions.<br />One common thread.</p>
+      <p class="work-note">{homepage.work.note[0]}<br />{homepage.work.note[1]}</p>
     </div>
   </div>
 
@@ -22,7 +23,7 @@ import { projects } from "../data/projects";
               <img
                 class:list={{ "project-slide": true, "is-active": imageIndex === 0 }}
                 src={image}
-                alt={`${project.client} project view ${imageIndex + 1}`}
+                alt={homepage.work.imageViewLabel(project.client, imageIndex)}
                 loading={imageIndex === 0 ? "lazy" : "eager"}
                 aria-hidden={imageIndex === 0 ? undefined : "true"}
               />
@@ -30,14 +31,14 @@ import { projects } from "../data/projects";
           </div>
           <div class="project-wash"></div>
           <span class="project-index">{project.index}</span>
-          <span class="project-arrow" aria-hidden="true">↗</span>
-          <div class="project-pagination" aria-label={`${project.client} image views`}>
+          <span class="project-arrow" aria-hidden="true">{homepage.ui.externalLink}</span>
+          <div class="project-pagination" aria-label={homepage.work.imageViewsLabel(project.client)}>
             {project.images.map((_, imageIndex) => (
               <button
                 class:list={{ "is-active": imageIndex === 0 }}
                 type="button"
                 data-slide-target={imageIndex}
-                aria-label={`Show image ${imageIndex + 1}`}
+                aria-label={homepage.work.showImageLabel(imageIndex)}
                 aria-current={imageIndex === 0 ? "true" : undefined}
               ></button>
             ))}

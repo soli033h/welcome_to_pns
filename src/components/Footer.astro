@@ -1,18 +1,20 @@
 ---
 import { company } from "../data/company";
+import { homepage } from "../data/homepage";
 ---
 
 <footer class="site-footer">
   <div class="container">
     <div class="footer-top">
-      <a class="brand-mark" href="#top" aria-label={`${company.name} home`}><span class="brand-dot"></span><span>{company.name}</span></a>
-      <p>Ideas with<br />a pulse.</p>
+      <a class="brand-mark" href="#top" aria-label={homepage.header.brandLabel(company.name)}><span class="brand-dot"></span><span>{company.name}</span></a>
+      <p>{homepage.footer.tagline[0]}<br />{homepage.footer.tagline[1]}</p>
     </div>
     <div class="footer-bottom">
       <span>© {new Date().getFullYear()} {company.legalName}</span>
       <div class="footer-links">
-        <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram ↗</a>
-        <a href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+        {homepage.footer.socialLinks.map((link) => (
+          <a href={link.href} target="_blank" rel="noreferrer">{link.label} {homepage.ui.externalLink}</a>
+        ))}
       </div>
       <span>{company.location}</span>
     </div>
