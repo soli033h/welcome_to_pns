@@ -1,6 +1,39 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+type MapCoordinate = [number, number];
+interface MapLibreMap {
+  addControl: (control: object, position: string) => MapLibreMap;
+}
+interface MapLibreMarker {
+  setLngLat: (location: MapCoordinate) => MapLibreMarker;
+  setPopup: (popup: MapLibrePopup) => MapLibreMarker;
+  addTo: (map: MapLibreMap) => MapLibreMarker;
+}
+interface MapLibrePopup {
+  setLngLat: (location: MapCoordinate) => MapLibrePopup;
+  setHTML: (content: string) => MapLibrePopup;
+  addTo: (map: MapLibreMap) => MapLibrePopup;
+}
+interface MapLibreApi {
+  Map: new (options: {
+    container: HTMLElement;
+    style: string;
+    center: MapCoordinate;
+    zoom: number;
+    attributionControl: boolean;
+    scrollZoom: boolean;
+  }) => MapLibreMap;
+  NavigationControl: new () => object;
+  Marker: new (options: { element: HTMLElement; anchor: string }) => MapLibreMarker;
+  Popup: new (options: { closeButton: boolean; closeOnClick: boolean; offset: number }) => MapLibrePopup;
+}
+declare global {
+  interface Window {
+    maplibregl?: MapLibreApi;
+  }
+}
+
 gsap.registerPlugin(ScrollTrigger);
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -8,62 +41,34 @@ const header = document.querySelector<HTMLElement>("[data-header]");
 const menuToggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
 const mobileMenu = document.querySelector<HTMLElement>(".mobile-menu");
 const workSection = document.querySelector<HTMLElement>("[data-work-section]");
-const map = document.querySelector<HTMLElement>("[data-map]");
 const sliderInterval = 5200;
 
-if (map) {
-  const viewport = map.querySelector<HTMLElement>("[data-map-viewport]");
-  const resetButton = map.querySelector<HTMLButtonElement>("[data-map-reset]");
-  const zoomButtons = Array.from(map.querySelectorAll<HTMLButtonElement>("[data-map-zoom]"));
-  let scale = 1;
-  let offsetX = 0;
-  let offsetY = 0;
-  let pointerId: number | undefined;
-  let startX = 0;
-  let startY = 0;
-  let startOffsetX = 0;
-  let startOffsetY = 0;
+const mapElement = document.querySelector<HTMLElement>("[data-leaflet-map]");
 
-  const renderMap = () => {
-    viewport?.style.setProperty("transform", `translate(${offsetX}px, ${offsetY}px) scale(${scale})`);
-  };
+if (mapElement && window.maplibregl) {
+  const location: MapCoordinate = [127.03061, 37.50545];
+  const map = new window.maplibregl.Map({
+    container: mapElement,
+    style: "https://tiles.openfreemap.org/styles/positron",
+    center: location,
+    zoom: 16,
+    attributionControl: true,
+    scrollZoom: false,
+  });
+  map.addControl(new window.maplibregl.NavigationControl(), "top-right");
 
-  const setZoom = (amount: number) => {
-    scale = Math.min(1.6, Math.max(.8, scale + amount));
-    renderMap();
-  };
+  const markerElement = document.createElement("div");
+  markerElement.className = "pns-map-marker";
+  markerElement.innerHTML = '<span class="pns-map-marker__pulse"></span><span class="pns-map-marker__dot"></span><span class="pns-map-marker__label">PNS</span>';
+  const popup = new window.maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 24 })
+    .setLngLat(location)
+    .setHTML('<div class="pns-map-popup"><span>Studio / PNS</span><strong>서울특별시 강남구<br />논현로105길 11-7</strong></div>');
 
-  zoomButtons.forEach((button) => {
-    button.addEventListener("click", () => setZoom(Number(button.dataset.mapZoom) * .2));
-  });
-  resetButton?.addEventListener("click", () => {
-    scale = 1;
-    offsetX = 0;
-    offsetY = 0;
-    renderMap();
-  });
-  map.addEventListener("pointerdown", (event) => {
-    pointerId = event.pointerId;
-    startX = event.clientX;
-    startY = event.clientY;
-    startOffsetX = offsetX;
-    startOffsetY = offsetY;
-    map.setPointerCapture(event.pointerId);
-  });
-  map.addEventListener("pointermove", (event) => {
-    if (pointerId !== event.pointerId) return;
-    offsetX = startOffsetX + event.clientX - startX;
-    offsetY = startOffsetY + event.clientY - startY;
-    renderMap();
-  });
-  map.addEventListener("pointerup", (event) => {
-    if (pointerId === event.pointerId) pointerId = undefined;
-  });
-  map.addEventListener("pointercancel", () => { pointerId = undefined; });
-  map.addEventListener("wheel", (event) => {
-    event.preventDefault();
-    setZoom(event.deltaY > 0 ? -.1 : .1);
-  }, { passive: false });
+  new window.maplibregl.Marker({ element: markerElement, anchor: "center" })
+    .setLngLat(location)
+    .setPopup(popup)
+    .addTo(map);
+  popup.addTo(map);
 }
 
 document.querySelectorAll<HTMLElement>("[data-slider]").forEach((slider) => {

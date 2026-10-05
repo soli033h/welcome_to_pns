@@ -22,28 +22,7 @@ import { homepage } from "../data/homepage";
           aria-label={homepage.visit.mapLabel}
           tabindex="0"
         >
-          <div class="map-viewport" data-map-viewport>
-            <div class="map-grid"></div>
-            <div class="map-river"></div>
-            <span class="map-road road-one"></span>
-            <span class="map-road road-two"></span>
-            <span class="map-road road-three"></span>
-            <span class="map-road road-four"></span>
-            <span class="map-label label-one">{homepage.visit.mapLabels[0]}</span>
-            <span class="map-label label-two">{homepage.visit.mapLabels[1]}</span>
-            <span class="map-label label-three">{homepage.visit.mapLabels[2]}</span>
-            <button class="map-marker" type="button" aria-label={homepage.visit.markerLabel} data-map-marker>
-              <span class="map-marker-pulse"></span>
-              <span class="map-marker-dot"></span>
-              <span class="map-marker-name">{company.name}</span>
-            </button>
-          </div>
-          <span class="map-hint">{homepage.visit.mapHint}</span>
-          <div class="map-controls" aria-label={homepage.visit.controlsLabel}>
-            <button type="button" aria-label={homepage.visit.zoomInLabel} data-map-zoom="1">+</button>
-            <button type="button" aria-label={homepage.visit.zoomOutLabel} data-map-zoom="-1">−</button>
-            <button type="button" aria-label={homepage.visit.resetLabel} data-map-reset>◎</button>
-          </div>
+          <div class="leaflet-map" data-leaflet-map aria-label={homepage.visit.mapLabel}></div>
         </div>
       </div>
 
