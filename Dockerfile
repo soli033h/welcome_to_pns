@@ -1,3 +1,13 @@
+# Development image for local hot reload
+FROM node:22-alpine AS development
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+
 # Build the Astro static site
 FROM node:22-alpine AS builder
 
