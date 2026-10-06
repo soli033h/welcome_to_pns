@@ -546,7 +546,7 @@ img { display: block; max-width: 100%; }
 .visit-detail a span, .visit-directions > span:last-child { color: $acid; }
 .visit-directions { display: flex; align-items: center; justify-content: space-between; padding-top: 28px; font-size: 18px; }
 
-  .contact-section {
+.contact-section {
   color: $paper;
   background:
     radial-gradient(circle at 86% 8%, rgba(255, 214, 164, .28), transparent 30%),
